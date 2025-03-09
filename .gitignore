@@ -2,3 +2,5 @@
 *.lst
 *.jar
 target/surefire-reports/TEST-jp.hatano.textsearch.AppTest.xml
+target/maven-archiver/pom.properties
+target/surefire-reports/jp.hatano.textsearch.AppTest.txt
