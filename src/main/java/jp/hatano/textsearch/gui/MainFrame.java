@@ -2,6 +2,7 @@ package jp.hatano.textsearch.gui;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Arrays;
 import java.util.prefs.Preferences;
 
 public class MainFrame extends JFrame {
@@ -28,6 +29,14 @@ public class MainFrame extends JFrame {
         resultListPanel = new ResultListPanel(this);
         searchTermListPanel = new SearchTermListPanel(this);
         textArea = new JTextArea();
+        Font textAreaFont = new Font("Courier New", Font.PLAIN, 12);
+        if (!Arrays.stream(GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames()).anyMatch(name -> name.equals("Courier New")) ) {
+            textAreaFont = new Font("Monospaced", Font.PLAIN, 12);
+        }
+        textArea.setFont(textAreaFont);
+        textArea.setLineWrap(true);
+        textArea.setWrapStyleWord(false);
+
 
         verticalSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, new JScrollPane(fileListPanel), new JScrollPane(textArea));
         horizontalSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, new JScrollPane(resultListPanel), verticalSplitPane);
@@ -48,6 +57,10 @@ public class MainFrame extends JFrame {
     }
 
     private void loadPreferences() {
+        int x = prefs.getInt("windowX", 100);
+        int y = prefs.getInt("windowY", 100);
+        setLocation(x, y);
+
         int width = prefs.getInt("windowWidth", 1000);
         int height = prefs.getInt("windowHeight", 600);
         setSize(width, height);
@@ -66,6 +79,9 @@ public class MainFrame extends JFrame {
     }
 
     private void savePreferences() {
+        prefs.putInt("windowX", getLocationOnScreen().x);
+        prefs.putInt("windowY", getLocationOnScreen().y);
+
         prefs.putInt("windowWidth", getWidth());
         prefs.putInt("windowHeight", getHeight());
 

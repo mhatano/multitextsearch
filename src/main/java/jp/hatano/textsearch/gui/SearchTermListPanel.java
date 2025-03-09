@@ -8,8 +8,8 @@ public class SearchTermListPanel extends JList<String> {
     private DefaultListModel<String> listModel;
     private MainFrame mainFrame;
 
-    public SearchTermListPanel(MainFrame mainFrame) {
-        this.mainFrame = mainFrame;
+    public SearchTermListPanel(MainFrame mainFrame0) {
+        mainFrame = mainFrame0;
         listModel = new DefaultListModel<>();
         setModel(listModel);
 

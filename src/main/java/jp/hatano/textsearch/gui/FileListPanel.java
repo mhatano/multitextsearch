@@ -50,7 +50,7 @@ public class FileListPanel extends JList<File> {
             String line;
             int lineCount = 0;
             while ((line = reader.readLine()) != null) {
-                textArea.append((lineCount + 1) + ": " + line + "\n");
+                textArea.append(String.format("%5d: ", lineCount + 1) + line + "\n");
                 lineCount++;
             }
             // Check if highlightLineNumber is valid

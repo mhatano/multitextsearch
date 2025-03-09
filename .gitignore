@@ -1,0 +1,4 @@
+*.class
+*.lst
+*.jar
+target/surefire-reports/TEST-jp.hatano.textsearch.AppTest.xml
