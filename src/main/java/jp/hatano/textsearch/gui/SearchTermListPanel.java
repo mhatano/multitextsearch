@@ -21,7 +21,7 @@ public class SearchTermListPanel extends JList<String> {
                     mainFrame.getResultListPanel().clearResults();
                     File currentDirectory = mainFrame.getResultListPanel().getCurrentDirectory();
                     if (currentDirectory != null) {
-                        mainFrame.getResultListPanel().searchDirectory(currentDirectory, selectedTerm);
+                        mainFrame.getResultListPanel().searchFiles(mainFrame.getFileListPanel(), selectedTerm);
                     }
                 }
             }

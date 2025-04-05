@@ -4,6 +4,8 @@ import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FileListPanel extends JList<File> {
     private DefaultListModel<File> fileListModel;
@@ -26,13 +28,19 @@ public class FileListPanel extends JList<File> {
         });
     }
 
-    public void loadDirectory(File directory) {
+    public void loadDirectory(File directory, boolean includeSubdirectories) {
         fileListModel.clear();
         currentDirectory = directory;
+        addDirectory(directory,includeSubdirectories);
+    }
+
+    private void addDirectory(File directory, boolean includeSubdirectories) {
         File[] files = directory.listFiles();
-        if (files != null) {
-            for (File file : files) {
-                if (file.isFile()) {
+        if ( files != null ) {
+            for ( File file : files ) {
+                if ( file.isDirectory() && includeSubdirectories ) {
+                    addDirectory(file,true);
+                } else if ( file.isFile() ) {
                     fileListModel.addElement(file);
                 }
             }
@@ -83,5 +91,14 @@ public class FileListPanel extends JList<File> {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
+
+    public List<File> getFileList() {
+        List<File> fileList = new ArrayList<File>();
+        for ( Object object : fileListModel.toArray() ) {
+            File file = (File)object;
+            fileList.add(file);
+        }
+        return fileList;
     }
 }

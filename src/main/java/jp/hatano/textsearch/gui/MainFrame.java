@@ -2,6 +2,9 @@ package jp.hatano.textsearch.gui;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Arrays;
 import java.util.prefs.Preferences;
 
@@ -18,7 +21,7 @@ public class MainFrame extends JFrame {
     private Preferences prefs;
 
     public MainFrame() {
-        setTitle("Text Search Application");
+        setTitle("Multi-Text Search");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
@@ -37,7 +40,6 @@ public class MainFrame extends JFrame {
         textArea.setLineWrap(true);
         textArea.setWrapStyleWord(false);
 
-
         verticalSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, new JScrollPane(fileListPanel), new JScrollPane(textArea));
         horizontalSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, new JScrollPane(resultListPanel), verticalSplitPane);
         leftSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, new JScrollPane(searchTermListPanel), new JScrollPane(resultListPanel));
@@ -45,6 +47,84 @@ public class MainFrame extends JFrame {
 
         add(searchPanel, BorderLayout.NORTH);
         add(mainSplitPane, BorderLayout.CENTER);
+
+        // Create menu bar
+        JMenuBar menuBar = new JMenuBar();
+
+        // Create "File" menu
+        JMenu fileMenu = new JMenu("File");
+
+        // Add "Open Search Term List File" menu item
+        JMenuItem openSearchTermListMenuItem = new JMenuItem("Open Search Term List File");
+        fileMenu.add(openSearchTermListMenuItem);
+
+        // Add "Open Search Target Folder" menu item
+        JMenuItem openSearchTargetFolderMenuItem = new JMenuItem("Open Search Target Folder");
+        fileMenu.add(openSearchTargetFolderMenuItem);
+
+        // Add "Exit" menu item
+        JMenuItem exitMenuItem = new JMenuItem("Exit");
+        fileMenu.add(exitMenuItem);
+
+        // Add action listener for "Open Search Term List File" menu item
+        openSearchTermListMenuItem.addActionListener(e -> {
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setDialogTitle("Open Search Term List File");
+
+            // Restore last directory from preferences
+            String lastSearchTermDir = prefs.get("lastSearchTermDir", null);
+            if (lastSearchTermDir != null) {
+                fileChooser.setCurrentDirectory(new File(lastSearchTermDir));
+            }
+
+            int result = fileChooser.showOpenDialog(this);
+            if (result == JFileChooser.APPROVE_OPTION) {
+                File selectedFile = fileChooser.getSelectedFile();
+                searchPanel.loadSearchTerms(selectedFile);
+
+                // Save the directory to preferences
+                prefs.put("lastSearchTermDir", selectedFile.getParent());
+            }
+        });
+
+        // Add action listener for "Open Search Target Folder" menu item
+        openSearchTargetFolderMenuItem.addActionListener(e -> {
+            JFileChooser folderChooser = new JFileChooser();
+            folderChooser.setDialogTitle("Open Search Target Folder");
+            folderChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+
+            // Add "Include Subdirectories" checkbox to the file chooser
+            JCheckBox includeSubdirectoriesCheckBox = new JCheckBox("Include Subdirectories");
+
+            // Restore last directory and checkbox state from preferences
+            String lastSearchTargetDir = prefs.get("lastSearchTargetDir", null);
+            if (lastSearchTargetDir != null) {
+                folderChooser.setCurrentDirectory(new File(lastSearchTargetDir));
+            }
+            boolean includeSubdirectories = prefs.getBoolean("includeSubdirectories", false);
+            includeSubdirectoriesCheckBox.setSelected(includeSubdirectories);
+
+            folderChooser.setAccessory(includeSubdirectoriesCheckBox);
+
+            int result = folderChooser.showOpenDialog(this);
+            if (result == JFileChooser.APPROVE_OPTION) {
+                File selectedFolder = folderChooser.getSelectedFile();
+                boolean includeSubdirs = includeSubdirectoriesCheckBox.isSelected();
+                fileListPanel.loadDirectory(selectedFolder, includeSubdirs);
+
+                prefs.put("lastSearchTargetDir", selectedFolder.getAbsolutePath());
+                prefs.putBoolean("includeSubdirectories", includeSubdirs);
+            }
+        });
+
+        // Add action listener for "Exit" menu item
+        exitMenuItem.addActionListener(e -> System.exit(0));
+
+        // Add "File" menu to the menu bar
+        menuBar.add(fileMenu);
+
+        // Set the menu bar for the frame
+        setJMenuBar(menuBar);
 
         loadPreferences();
 
@@ -91,6 +171,23 @@ public class MainFrame extends JFrame {
         prefs.putInt("horizontalDividerLocation", horizontalSplitPane.getDividerLocation());
     }
 
+    private List<File> getSearchTargets(File directory, boolean includeSubdirectories) {
+        List<File> files = new ArrayList<>();
+        if (directory.isDirectory()) {
+            File[] fileList = directory.listFiles();
+            if (fileList != null) {
+                for (File file : fileList) {
+                    if (file.isDirectory() && includeSubdirectories) {
+                        files.addAll(getSearchTargets(file, true));
+                    } else if (file.isFile()) {
+                        files.add(file);
+                    }
+                }
+            }
+        }
+        return files;
+    }
+
     public JTextArea getTextArea() {
         return textArea;
     }
@@ -108,11 +205,6 @@ public class MainFrame extends JFrame {
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new MainFrame().setVisible(true);
-            }
-        });
+        SwingUtilities.invokeLater(() -> new MainFrame().setVisible(true));
     }
 }

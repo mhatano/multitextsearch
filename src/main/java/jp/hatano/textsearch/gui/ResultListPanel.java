@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.util.List;
 
 public class ResultListPanel extends JList<String> {
     private DefaultListModel<String> listModel;
@@ -67,8 +68,9 @@ public class ResultListPanel extends JList<String> {
         listModel.clear();
     }
 
-    public void searchDirectory(File directory, String searchText) {
-        File[] files = directory.listFiles();
+    public void searchFiles(FileListPanel fileListPanel, String searchText) {
+        List<File> fileList = fileListPanel.getFileList();
+        File[] files = fileList.toArray(new File[0]);
         if (files != null) {
             for (File file : files) {
                 if (file.isFile()) {
