@@ -80,8 +80,6 @@ public class MainFrame extends JFrame {
             int result = fileChooser.showOpenDialog(this);
             if (result == JFileChooser.APPROVE_OPTION) {
                 File selectedFile = fileChooser.getSelectedFile();
-                System.out.println("Selected Search Term List File: " + selectedFile.getAbsolutePath());
-                // Load the search term list file logic here
                 searchPanel.loadSearchTerms(selectedFile);
 
                 // Save the directory to preferences
@@ -112,13 +110,8 @@ public class MainFrame extends JFrame {
             if (result == JFileChooser.APPROVE_OPTION) {
                 File selectedFolder = folderChooser.getSelectedFile();
                 boolean includeSubdirs = includeSubdirectoriesCheckBox.isSelected();
-                System.out.println("Selected Search Target Folder: " + selectedFolder.getAbsolutePath());
-                System.out.println("Include Subdirectories: " + includeSubdirs);
-
-                // Load the search target folder logic here
                 fileListPanel.loadDirectory(selectedFolder, includeSubdirs);
 
-                // Save the directory and checkbox state to preferences
                 prefs.put("lastSearchTargetDir", selectedFolder.getAbsolutePath());
                 prefs.putBoolean("includeSubdirectories", includeSubdirs);
             }

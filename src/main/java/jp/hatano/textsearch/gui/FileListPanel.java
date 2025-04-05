@@ -29,10 +29,6 @@ public class FileListPanel extends JList<File> {
     }
 
     public void loadDirectory(File directory, boolean includeSubdirectories) {
-        // Logic to load files from the directory, including subdirectories if specified
-        System.out.println("Loading directory: " + directory.getAbsolutePath());
-        System.out.println("Include Subdirectories: " + includeSubdirectories);
-        // Implement file loading logic here
         fileListModel.clear();
         currentDirectory = directory;
         addDirectory(directory,includeSubdirectories);
