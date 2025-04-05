@@ -3,8 +3,6 @@ package jp.hatano.textsearch.gui;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Arrays;
 import java.util.prefs.Preferences;
 
@@ -169,23 +167,6 @@ public class MainFrame extends JFrame {
         prefs.putInt("leftDividerLocation", leftSplitPane.getDividerLocation());
         prefs.putInt("verticalDividerLocation", verticalSplitPane.getDividerLocation());
         prefs.putInt("horizontalDividerLocation", horizontalSplitPane.getDividerLocation());
-    }
-
-    private List<File> getSearchTargets(File directory, boolean includeSubdirectories) {
-        List<File> files = new ArrayList<>();
-        if (directory.isDirectory()) {
-            File[] fileList = directory.listFiles();
-            if (fileList != null) {
-                for (File file : fileList) {
-                    if (file.isDirectory() && includeSubdirectories) {
-                        files.addAll(getSearchTargets(file, true));
-                    } else if (file.isFile()) {
-                        files.add(file);
-                    }
-                }
-            }
-        }
-        return files;
     }
 
     public JTextArea getTextArea() {
