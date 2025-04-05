@@ -70,12 +70,22 @@ public class MainFrame extends JFrame {
         openSearchTermListMenuItem.addActionListener(e -> {
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.setDialogTitle("Open Search Term List File");
+
+            // Restore last directory from preferences
+            String lastSearchTermDir = prefs.get("lastSearchTermDir", null);
+            if (lastSearchTermDir != null) {
+                fileChooser.setCurrentDirectory(new File(lastSearchTermDir));
+            }
+
             int result = fileChooser.showOpenDialog(this);
             if (result == JFileChooser.APPROVE_OPTION) {
                 File selectedFile = fileChooser.getSelectedFile();
                 System.out.println("Selected Search Term List File: " + selectedFile.getAbsolutePath());
                 // Load the search term list file logic here
                 searchPanel.loadSearchTerms(selectedFile);
+
+                // Save the directory to preferences
+                prefs.put("lastSearchTermDir", selectedFile.getParent());
             }
         });
 
@@ -87,17 +97,30 @@ public class MainFrame extends JFrame {
 
             // Add "Include Subdirectories" checkbox to the file chooser
             JCheckBox includeSubdirectoriesCheckBox = new JCheckBox("Include Subdirectories");
+
+            // Restore last directory and checkbox state from preferences
+            String lastSearchTargetDir = prefs.get("lastSearchTargetDir", null);
+            if (lastSearchTargetDir != null) {
+                folderChooser.setCurrentDirectory(new File(lastSearchTargetDir));
+            }
+            boolean includeSubdirectories = prefs.getBoolean("includeSubdirectories", false);
+            includeSubdirectoriesCheckBox.setSelected(includeSubdirectories);
+
             folderChooser.setAccessory(includeSubdirectoriesCheckBox);
 
             int result = folderChooser.showOpenDialog(this);
             if (result == JFileChooser.APPROVE_OPTION) {
                 File selectedFolder = folderChooser.getSelectedFile();
-                boolean includeSubdirectories = includeSubdirectoriesCheckBox.isSelected();
+                boolean includeSubdirs = includeSubdirectoriesCheckBox.isSelected();
                 System.out.println("Selected Search Target Folder: " + selectedFolder.getAbsolutePath());
-                System.out.println("Include Subdirectories: " + includeSubdirectories);
+                System.out.println("Include Subdirectories: " + includeSubdirs);
 
                 // Load the search target folder logic here
-                fileListPanel.loadDirectory(selectedFolder, includeSubdirectories);
+                fileListPanel.loadDirectory(selectedFolder, includeSubdirs);
+
+                // Save the directory and checkbox state to preferences
+                prefs.put("lastSearchTargetDir", selectedFolder.getAbsolutePath());
+                prefs.putBoolean("includeSubdirectories", includeSubdirs);
             }
         });
 
