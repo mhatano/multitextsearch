@@ -2,9 +2,8 @@ package jp.hatano.textsearch;
 
 import jp.hatano.textsearch.gui.MainFrame;
 
-/**
- * Hello world!
- *
+/*
+ *  App : Main application class for multitextsearch
  */
 public class App 
 {
