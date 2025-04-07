@@ -37,6 +37,7 @@ public class MainFrame extends JFrame {
         textArea.setFont(textAreaFont);
         textArea.setLineWrap(true);
         textArea.setWrapStyleWord(false);
+        textArea.setEditable(false);
 
         verticalSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, new JScrollPane(fileListPanel), new JScrollPane(textArea));
         horizontalSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, new JScrollPane(resultListPanel), verticalSplitPane);
