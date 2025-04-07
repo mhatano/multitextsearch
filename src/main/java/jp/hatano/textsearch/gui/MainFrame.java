@@ -17,6 +17,7 @@ public class MainFrame extends JFrame {
     private JSplitPane leftSplitPane;
     private JSplitPane mainSplitPane;
     private Preferences prefs;
+    private boolean ignoreCase;
 
     public MainFrame() {
         setTitle("Multi-Text Search");
@@ -133,6 +134,14 @@ public class MainFrame extends JFrame {
                 savePreferences();
             }
         });
+    }
+
+    public boolean getIgnoreCase() {
+        return ignoreCase;
+    }
+
+    public void setIgnoreCase(boolean ignoreCase) {
+        this.ignoreCase = ignoreCase;
     }
 
     private void loadPreferences() {

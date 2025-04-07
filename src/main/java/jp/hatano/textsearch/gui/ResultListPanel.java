@@ -5,6 +5,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.List;
+import java.util.Locale;
 
 public class ResultListPanel extends JList<String> {
     private DefaultListModel<String> listModel;
@@ -70,25 +71,25 @@ public class ResultListPanel extends JList<String> {
         listModel.clear();
     }
 
-    public void searchFiles(FileListPanel fileListPanel, String searchText) {
+    public void searchFiles(FileListPanel fileListPanel, String searchText, boolean ignoreCase) {
         List<File> fileList = fileListPanel.getFileList();
         File[] files = fileList.toArray(new File[0]);
         if (files != null) {
             for (File file : files) {
                 if (file.isFile()) {
-                    searchFile(file, searchText);
+                    searchFile(file, searchText, ignoreCase);
                 }
             }
         }
     }
 
-    private void searchFile(File file, String searchText) {
+    private void searchFile(File file, String searchText, boolean ignoreCase) {
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String line;
             int lineNumber = 0;
             while ((line = reader.readLine()) != null) {
                 lineNumber++;
-                if (line.contains(searchText)) {
+                if (line.contains(searchText)||(ignoreCase && line.toUpperCase(Locale.ROOT).contains(searchText.toUpperCase(Locale.ROOT)))) {
                     listModel.addElement(file.getAbsolutePath() + ": Line " + lineNumber + ": " + line);
                 }
             }
