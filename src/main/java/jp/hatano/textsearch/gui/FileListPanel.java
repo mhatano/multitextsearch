@@ -1,11 +1,12 @@
 package jp.hatano.textsearch.gui;
 
 import javax.swing.*;
+
+import jp.hatano.textsearch.util.DialogUtils;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,20 +68,15 @@ public class FileListPanel extends JList<File> {
             if (highlightLineNumber >= 0 && highlightLineNumber < lineCount) {
                 highlightLine(highlightLineNumber);
             } else if (highlightLineNumber != -1) {
-                JOptionPane.showMessageDialog(mainFrame, 
-                    "The target line " + (highlightLineNumber + 1) + " is out of bounds in the file.", 
-                    "Error", 
-                    JOptionPane.ERROR_MESSAGE);
+                DialogUtils.showErrorDialog(mainFrame, 
+                    "The target line " + (highlightLineNumber + 1) + " is out of bounds in the file."
+                );
             }
         } catch (Exception ex) {
-            StringWriter sw = new StringWriter();
-            ex.printStackTrace(new PrintWriter(sw));
-            String stackTrace = sw.toString();
-
-            JOptionPane.showMessageDialog(mainFrame, 
-                "Error loading file: " + ex.getMessage() + "\n\nStack Trace:\n" + stackTrace, 
-                "Error", 
-                JOptionPane.ERROR_MESSAGE);
+            DialogUtils.showErrorDialog(mainFrame, 
+                "Error loading file: " + ex.getMessage() + "\n\nStack Trace:\n",
+                ex
+            );
         }
     }
 
@@ -96,21 +92,17 @@ public class FileListPanel extends JList<File> {
                     textArea.moveCaretPosition(end);
                     textArea.getCaret().setSelectionVisible(true);
                 } else {
-                    JOptionPane.showMessageDialog(mainFrame, 
-                        "Error highlighting line. Line number: " + (lineNumber + 1), 
-                        "Error", 
-                        JOptionPane.ERROR_MESSAGE);
+                    DialogUtils.showErrorDialog(mainFrame, 
+                        "Error highlighting line. Line number: " + (lineNumber + 1)
+                        + " is out of bounds. Total lines: " + lineCount
+                    );
                 }
             }
         } catch (Exception ex) {
-            StringWriter sw = new StringWriter();
-            ex.printStackTrace(new PrintWriter(sw));
-            String stackTrace = sw.toString();
-
-            JOptionPane.showMessageDialog(mainFrame, 
-                "Error highlighting line: " + ex.getMessage() + "\n\nStack Trace:\n" + stackTrace, 
-                "Error", 
-                JOptionPane.ERROR_MESSAGE);
+            DialogUtils.showErrorDialog(mainFrame, 
+                "Error highlighting line: " + ex.getMessage() + "\n\nStack Trace:\n",
+                ex
+            );
         }
     }
 

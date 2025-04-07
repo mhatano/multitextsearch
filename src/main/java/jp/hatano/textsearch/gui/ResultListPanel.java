@@ -5,8 +5,6 @@ import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.util.List;
 import java.util.Locale;
 
@@ -35,7 +33,7 @@ public class ResultListPanel extends JList<String> {
                             highlightFileInList(file);
                             highlightLineInTextArea(lineNumber);
                         } catch (NumberFormatException ex) {
-                            showErrorDialog("Error parsing line number", ex);
+                            DialogUtils.showErrorDialog(mainFrame,"Error parsing line number", ex);
                         }
                     }
                 }
@@ -97,22 +95,11 @@ public class ResultListPanel extends JList<String> {
                 }
             }
         } catch (Exception ex) {
-            showErrorDialog("Error searching file: " + file.getAbsolutePath(), ex);
+            DialogUtils.showErrorDialog(mainFrame,"Error searching file: " + file.getAbsolutePath(), ex);
         }
     }
 
     public File getCurrentDirectory() {
         return mainFrame.getFileListPanel().getCurrentDirectory();
-    }
-
-    private void showErrorDialog(String message, Exception ex) {
-        StringWriter sw = new StringWriter();
-        ex.printStackTrace(new PrintWriter(sw));
-        String stackTrace = sw.toString();
-
-        JOptionPane.showMessageDialog(mainFrame,
-            message + "\n\nStack Trace:\n" + stackTrace,
-            "Error",
-            JOptionPane.ERROR_MESSAGE);
     }
 }

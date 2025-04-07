@@ -1,6 +1,9 @@
 package jp.hatano.textsearch.gui;
 
 import javax.swing.*;
+
+import jp.hatano.textsearch.util.DialogUtils;
+
 import java.awt.*;
 import java.io.File;
 import java.util.Arrays;
@@ -87,7 +90,7 @@ public class MainFrame extends JFrame {
                     // Save the directory to preferences
                     prefs.put("lastSearchTermDir", selectedFile.getParent());
                 } else {
-                    JOptionPane.showMessageDialog(this, "Selected file does not exist or is not a file.", "Error", JOptionPane.ERROR_MESSAGE);
+                    DialogUtils.showErrorDialog(this, "Selected file does not exist or is not a file.");
                 }
             }
         });
@@ -121,7 +124,7 @@ public class MainFrame extends JFrame {
                     prefs.put("lastSearchTargetDir", selectedFolder.getAbsolutePath());
                     prefs.putBoolean("includeSubdirectories", includeSubdirs);
                 } else {
-                    JOptionPane.showMessageDialog(this, "The selected folder does not exist or is not a directory.", "Error", JOptionPane.ERROR_MESSAGE);
+                    DialogUtils.showErrorDialog(this, "The selected folder does not exist or is not a directory.");
                 }
             }
         });
