@@ -56,9 +56,11 @@ public class ResultListPanel extends JList<String> {
         try {
             int start = textArea.getLineStartOffset(lineNumber);
             int end = textArea.getLineEndOffset(lineNumber);
+            textArea.setEditable(true);
             textArea.setCaretPosition(start);
             textArea.moveCaretPosition(end);
             textArea.getCaret().setSelectionVisible(true);
+            textArea.setEditable(false);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
