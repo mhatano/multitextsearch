@@ -1,12 +1,13 @@
 package jp.hatano.textsearch.gui;
 
+import jp.hatano.textsearch.util.DialogUtils;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class SearchPanel extends JPanel {
@@ -24,8 +25,7 @@ public class SearchPanel extends JPanel {
                 searchTerms.add(line);
             }
         } catch (Exception ex) {
-            ex.printStackTrace();
-            JOptionPane.showMessageDialog(mainFrame, "Error loading search terms: " + ex.getMessage());
+            DialogUtils.showErrorDialog(mainFrame, "Error loading search terms from file: " + file.getAbsolutePath(), ex);
         }
         mainFrame.getSearchTermListPanel().setSearchTerms(searchTerms);
     }

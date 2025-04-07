@@ -1,9 +1,12 @@
 package jp.hatano.textsearch.gui;
 
+import jp.hatano.textsearch.util.DialogUtils;
 import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.List;
 import java.util.Locale;
 
@@ -32,7 +35,7 @@ public class ResultListPanel extends JList<String> {
                             highlightFileInList(file);
                             highlightLineInTextArea(lineNumber);
                         } catch (NumberFormatException ex) {
-                            ex.printStackTrace();
+                            showErrorDialog("Error parsing line number", ex);
                         }
                     }
                 }
@@ -63,7 +66,7 @@ public class ResultListPanel extends JList<String> {
             textArea.getCaret().setSelectionVisible(true);
             textArea.setEditable(false);
         } catch (Exception ex) {
-            ex.printStackTrace();
+            DialogUtils.showErrorDialog(mainFrame, "Error highlighting line in text area", ex);
         }
     }
 
@@ -89,16 +92,27 @@ public class ResultListPanel extends JList<String> {
             int lineNumber = 0;
             while ((line = reader.readLine()) != null) {
                 lineNumber++;
-                if (line.contains(searchText)||(ignoreCase && line.toUpperCase(Locale.ROOT).contains(searchText.toUpperCase(Locale.ROOT)))) {
+                if (line.contains(searchText) || (ignoreCase && line.toUpperCase(Locale.ROOT).contains(searchText.toUpperCase(Locale.ROOT)))) {
                     listModel.addElement(file.getAbsolutePath() + ": Line " + lineNumber + ": " + line);
                 }
             }
         } catch (Exception ex) {
-            ex.printStackTrace();
+            showErrorDialog("Error searching file: " + file.getAbsolutePath(), ex);
         }
     }
 
     public File getCurrentDirectory() {
         return mainFrame.getFileListPanel().getCurrentDirectory();
+    }
+
+    private void showErrorDialog(String message, Exception ex) {
+        StringWriter sw = new StringWriter();
+        ex.printStackTrace(new PrintWriter(sw));
+        String stackTrace = sw.toString();
+
+        JOptionPane.showMessageDialog(mainFrame,
+            message + "\n\nStack Trace:\n" + stackTrace,
+            "Error",
+            JOptionPane.ERROR_MESSAGE);
     }
 }

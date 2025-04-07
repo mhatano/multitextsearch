@@ -4,6 +4,8 @@ import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,11 +67,20 @@ public class FileListPanel extends JList<File> {
             if (highlightLineNumber >= 0 && highlightLineNumber < lineCount) {
                 highlightLine(highlightLineNumber);
             } else if (highlightLineNumber != -1) {
-                System.out.println("The target line " + (highlightLineNumber + 1) + " is out of bounds in the file.");
+                JOptionPane.showMessageDialog(mainFrame, 
+                    "The target line " + (highlightLineNumber + 1) + " is out of bounds in the file.", 
+                    "Error", 
+                    JOptionPane.ERROR_MESSAGE);
             }
         } catch (Exception ex) {
-            ex.printStackTrace();
-            JOptionPane.showMessageDialog(mainFrame, "Error loading file: " + ex.getMessage());
+            StringWriter sw = new StringWriter();
+            ex.printStackTrace(new PrintWriter(sw));
+            String stackTrace = sw.toString();
+
+            JOptionPane.showMessageDialog(mainFrame, 
+                "Error loading file: " + ex.getMessage() + "\n\nStack Trace:\n" + stackTrace, 
+                "Error", 
+                JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -85,11 +96,21 @@ public class FileListPanel extends JList<File> {
                     textArea.moveCaretPosition(end);
                     textArea.getCaret().setSelectionVisible(true);
                 } else {
-                    System.out.println("Error highlighting line. Line number: " + (lineNumber + 1));
+                    JOptionPane.showMessageDialog(mainFrame, 
+                        "Error highlighting line. Line number: " + (lineNumber + 1), 
+                        "Error", 
+                        JOptionPane.ERROR_MESSAGE);
                 }
             }
         } catch (Exception ex) {
-            ex.printStackTrace();
+            StringWriter sw = new StringWriter();
+            ex.printStackTrace(new PrintWriter(sw));
+            String stackTrace = sw.toString();
+
+            JOptionPane.showMessageDialog(mainFrame, 
+                "Error highlighting line: " + ex.getMessage() + "\n\nStack Trace:\n" + stackTrace, 
+                "Error", 
+                JOptionPane.ERROR_MESSAGE);
         }
     }
 

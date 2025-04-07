@@ -81,10 +81,14 @@ public class MainFrame extends JFrame {
             int result = fileChooser.showOpenDialog(this);
             if (result == JFileChooser.APPROVE_OPTION) {
                 File selectedFile = fileChooser.getSelectedFile();
-                searchPanel.loadSearchTerms(selectedFile);
+                if ( selectedFile.exists() && !selectedFile.isDirectory() ) {
+                    searchPanel.loadSearchTerms(selectedFile);
 
-                // Save the directory to preferences
-                prefs.put("lastSearchTermDir", selectedFile.getParent());
+                    // Save the directory to preferences
+                    prefs.put("lastSearchTermDir", selectedFile.getParent());
+                } else {
+                    JOptionPane.showMessageDialog(this, "Selected file does not exist or is not a file.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
             }
         });
 
@@ -111,10 +115,14 @@ public class MainFrame extends JFrame {
             if (result == JFileChooser.APPROVE_OPTION) {
                 File selectedFolder = folderChooser.getSelectedFile();
                 boolean includeSubdirs = includeSubdirectoriesCheckBox.isSelected();
-                fileListPanel.loadDirectory(selectedFolder, includeSubdirs);
+                if ( selectedFolder.exists() && selectedFolder.isDirectory() ) {
+                    fileListPanel.loadDirectory(selectedFolder, includeSubdirs);
 
-                prefs.put("lastSearchTargetDir", selectedFolder.getAbsolutePath());
-                prefs.putBoolean("includeSubdirectories", includeSubdirs);
+                    prefs.put("lastSearchTargetDir", selectedFolder.getAbsolutePath());
+                    prefs.putBoolean("includeSubdirectories", includeSubdirs);
+                } else {
+                    JOptionPane.showMessageDialog(this, "The selected folder does not exist or is not a directory.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
             }
         });
 
