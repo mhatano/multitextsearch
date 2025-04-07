@@ -25,6 +25,7 @@ public class MainFrame extends JFrame {
         setLocationRelativeTo(null);
 
         prefs = Preferences.userNodeForPackage(MainFrame.class);
+        ignoreCase = prefs.getBoolean("searchIgnoreCase", false);
 
         searchPanel = new SearchPanel(this);
         fileListPanel = new FileListPanel(this);
@@ -142,6 +143,7 @@ public class MainFrame extends JFrame {
 
     public void setIgnoreCase(boolean ignoreCase) {
         this.ignoreCase = ignoreCase;
+        prefs.putBoolean("searchIgnoreCase",ignoreCase);
     }
 
     private void loadPreferences() {
