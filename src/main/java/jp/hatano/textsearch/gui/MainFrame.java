@@ -135,6 +135,24 @@ public class MainFrame extends JFrame {
         // Add "File" menu to the menu bar
         menuBar.add(fileMenu);
 
+        // Create "Help" menu
+        JMenu helpMenu = new JMenu("Help");
+        JMenuItem aboutMenuItem = new JMenuItem("About Multi-Text Search");
+        helpMenu.add(aboutMenuItem);
+
+        // Add action listener for "About" menu item
+        aboutMenuItem.addActionListener(e -> {
+            JOptionPane.showMessageDialog(
+                this,
+                "Multi-Text Search\nVersion 1.0\n\nA powerful text search tool that allows you to search multiple files for multiple search terms simultaneously.\n\nDeveloped by: Manami Hatano\n\nhttps://github.com/mhatano/multitextsearch\n\nCopyright 2025", 
+                "About Multi-Text Search",
+                JOptionPane.INFORMATION_MESSAGE
+            );
+        });
+
+        // Add "Help" menu to the menu bar
+        menuBar.add(helpMenu);
+
         // Set the menu bar for the frame
         setJMenuBar(menuBar);
 
