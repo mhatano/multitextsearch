@@ -4,3 +4,11 @@ result
 panel
 ignore
 include
+editable
+visible
+error
+dialog
+file
+list
+caret
+highlight

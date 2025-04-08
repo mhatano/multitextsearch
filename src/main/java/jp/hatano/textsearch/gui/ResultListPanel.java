@@ -25,8 +25,16 @@ public class ResultListPanel extends JList<String> {
                     int lineIndex = selectedValue.lastIndexOf(": Line ");
                     if (lineIndex != -1) {
                         try {
-                            String filePath = selectedValue.substring(0, lineIndex);
-                            String lineNumberPart = selectedValue.substring(lineIndex + 7).split(":")[0].trim();
+                            String filePath;
+                            String lineNumberPart;
+                            while (true)  {
+                                filePath = selectedValue.substring(0, lineIndex);
+                                lineNumberPart = selectedValue.substring(lineIndex + 7).split(":")[0].trim();
+                                if (lineNumberPart.matches("[1-9][0-9]*")) {
+                                    break;
+                                }
+                                lineIndex = selectedValue.substring(0,lineIndex).lastIndexOf(": Line ");
+                            }
                             int lineNumber = Integer.parseInt(lineNumberPart) - 1;
                             File file = new File(filePath);
                             this.mainFrame.getFileListPanel().loadFile(file, lineNumber);
