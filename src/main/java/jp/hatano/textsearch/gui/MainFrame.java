@@ -141,7 +141,14 @@ public class MainFrame extends JFrame {
         aboutMenuItem.addActionListener(e -> {
             JOptionPane.showMessageDialog(
                 this,
-                "Multi-Text Search\nVersion 1.0\n\nA powerful text search tool that allows you to search multiple files for multiple search terms simultaneously.\n\nDeveloped by: Manami Hatano\n\nhttps://github.com/mhatano/multitextsearch\n\nCopyright 2025", 
+                "Multi-Text Search\n"+
+                "Version 1.0\n\n"+
+                "A powerful text search tool that allows you to\n"+
+                "search multiple files for multiple search terms\n"+
+                "simultaneously.\n\n"+
+                "Developed by: Manami Hatano\n\n"+
+                "https://github.com/mhatano/multitextsearch\n\n"+
+                "Copyright (c) 2025, M.Hatano", 
                 "About Multi-Text Search",
                 JOptionPane.INFORMATION_MESSAGE
             );
