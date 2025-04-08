@@ -49,9 +49,6 @@ public class MainFrame extends JFrame {
         leftSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, new JScrollPane(searchTermListPanel), new JScrollPane(resultListPanel));
         mainSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftSplitPane, verticalSplitPane);
 
-        add(searchPanel, BorderLayout.NORTH);
-        add(mainSplitPane, BorderLayout.CENTER);
-
         // Create menu bar
         JMenuBar menuBar = new JMenuBar();
 
@@ -155,6 +152,10 @@ public class MainFrame extends JFrame {
 
         // Set the menu bar for the frame
         setJMenuBar(menuBar);
+
+        // Add components to content pane
+        getContentPane().add(searchPanel, BorderLayout.NORTH);
+        getContentPane().add(mainSplitPane, BorderLayout.CENTER);
 
         loadPreferences();
 
