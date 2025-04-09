@@ -61,7 +61,7 @@ public class ResultListPanel extends JList<String> {
         }
     }
 
-    private void highlightLineInTextArea(int lineNumber) {
+    public void highlightLineInTextArea(int lineNumber) {
         JTextArea textArea = mainFrame.getTextArea();
         try {
             int start = textArea.getLineStartOffset(lineNumber);
