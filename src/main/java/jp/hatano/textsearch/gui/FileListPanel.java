@@ -66,7 +66,7 @@ public class FileListPanel extends JList<File> {
             }
             // Check if highlightLineNumber is valid
             if (highlightLineNumber >= 0 && highlightLineNumber < lineCount) {
-                highlightLine(highlightLineNumber);
+                mainPanel.getResultListPanel().highlightLineInTextArea(highlightLineNumber);
             } else if (highlightLineNumber != -1) {
                 DialogUtils.showErrorDialog(mainFrame, 
                     "The target line " + (highlightLineNumber + 1) + " is out of bounds in the file."
@@ -75,32 +75,6 @@ public class FileListPanel extends JList<File> {
         } catch (Exception ex) {
             DialogUtils.showErrorDialog(mainFrame, 
                 "Error loading file: " + ex.getMessage() + "\n\nStack Trace:\n",
-                ex
-            );
-        }
-    }
-
-    private void highlightLine(int lineNumber) {
-        try {
-            JTextArea textArea = mainFrame.getTextArea();
-            if (textArea != null) {
-                int lineCount = textArea.getLineCount();
-                if (lineNumber >= 0 && lineNumber < lineCount) {
-                    int start = textArea.getLineStartOffset(lineNumber);
-                    int end = textArea.getLineEndOffset(lineNumber);
-                    textArea.setCaretPosition(start);
-                    textArea.moveCaretPosition(end);
-                    textArea.getCaret().setSelectionVisible(true);
-                } else {
-                    DialogUtils.showErrorDialog(mainFrame, 
-                        "Error highlighting line. Line number: " + (lineNumber + 1)
-                        + " is out of bounds. Total lines: " + lineCount
-                    );
-                }
-            }
-        } catch (Exception ex) {
-            DialogUtils.showErrorDialog(mainFrame, 
-                "Error highlighting line: " + ex.getMessage() + "\n\nStack Trace:\n",
                 ex
             );
         }
