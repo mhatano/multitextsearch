@@ -66,7 +66,7 @@ public class FileListPanel extends JList<File> {
             }
             // Check if highlightLineNumber is valid
             if (highlightLineNumber >= 0 && highlightLineNumber < lineCount) {
-                mainPanel.getResultListPanel().highlightLineInTextArea(highlightLineNumber);
+                mainFrame.getResultListPanel().highlightLineInTextArea(highlightLineNumber);
             } else if (highlightLineNumber != -1) {
                 DialogUtils.showErrorDialog(mainFrame, 
                     "The target line " + (highlightLineNumber + 1) + " is out of bounds in the file."
