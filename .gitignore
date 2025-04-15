@@ -6,3 +6,7 @@ target/maven-archiver/pom.properties
 target/surefire-reports/jp.hatano.textsearch.AppTest.txt
 target/surefire-reports/2025-03-10T00-16-33_586-jvmRun1.dump
 .metals/*
+.project
+.gitignore
+.settings/*
+.classpath
