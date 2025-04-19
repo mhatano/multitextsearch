@@ -10,3 +10,8 @@ target/surefire-reports/2025-03-10T00-16-33_586-jvmRun1.dump
 .gitignore
 .settings/*
 .classpath
+.idea/compiler.xml
+.idea/encodings.xml
+.idea/jarRepositories.xml
+.idea/misc.xml
+.idea/vcs.xml
