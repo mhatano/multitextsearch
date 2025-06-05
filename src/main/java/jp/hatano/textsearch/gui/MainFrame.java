@@ -23,6 +23,27 @@ public class MainFrame extends JFrame {
     private boolean ignoreCase;
 
     public MainFrame() {
+        try {
+            boolean isWindows = System.getProperty("os.name").toLowerCase().contains("win");
+            boolean isMac = System.getProperty("os.name").toLowerCase().contains("mac");
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {  
+                if ((isWindows && "Windows".equals(info.getName())) 
+                    || (isMac && "Mac OS X".equals(info.getName()))
+                    || (!isWindows && !isMac && "Nimbums".equals(info.getName())) ) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        
         setTitle("Multi-Text Search");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);

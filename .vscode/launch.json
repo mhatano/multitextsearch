@@ -5,6 +5,20 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "type": "java",
+            "name": "App",
+            "request": "launch",
+            "mainClass": "jp.hatano.textsearch.App",
+            "projectName": "main"
+        },
+        {
+            "type": "java",
+            "name": "MainFrame",
+            "request": "launch",
+            "mainClass": "jp.hatano.textsearch.gui.MainFrame",
+            "projectName": "main"
+        },
+        {
             "type": "jdk",
             "request": "launch",
             "name": "Launch Java App"
